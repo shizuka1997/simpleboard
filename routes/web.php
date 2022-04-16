@@ -17,6 +17,6 @@ Route::get('/', function () {
 
 Route::resource('posts', 'PostController');
  
-if (env('APP_ENV') === 'local') {
-   URL::forceScheme('https');
-} 
+// if (env('APP_ENV') === 'local') {
+//    URL::forceScheme('https');
+// } 

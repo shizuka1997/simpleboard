@@ -15,6 +15,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
+
         return view('posts.index', compact('posts'));
     }
 
@@ -42,7 +43,6 @@ class PostController extends Controller
         $post->save();
 
         return redirect()->route('posts.show', ['id' => $post->id])->with('message', 'Post was successfully created.');
-
     }
 
     /**
@@ -51,8 +51,10 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($id)
     {
+        $post = Post::findOrFail($id);
+
         return view('posts.show', compact('post'));
     }
 
@@ -81,7 +83,6 @@ class PostController extends Controller
         $post->save();
 
         return redirect()->route('posts.show', ['id' => $post->id])->with('message', 'Post was successfully updated.');
-
     }
 
     /**
@@ -93,6 +94,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+
         return redirect()->route('posts.index');
     }
 }
