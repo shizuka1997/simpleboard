@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 use Validator;
+use DB;
+use Log;
 
 class PostController extends Controller
 {
@@ -13,9 +15,17 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all();
+        $title = $request->input("title");
+        // $posts = Post::all();
+        $sql = "select * from posts "
+                ."where title='$title'"
+                ."order by title desc";
+        Log::debug($sql);
+        $posts = DB::select($sql);
+        // dd($posts);
+        Log::debug($posts);
 
         return view('posts.index', compact('posts'));
     }
