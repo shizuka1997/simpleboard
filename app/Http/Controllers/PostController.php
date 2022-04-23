@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Validator;
 
 class PostController extends Controller
 {
@@ -37,6 +38,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->validate([
+        //     'title' => 'required',
+        //     'content' => 'required',
+        // ]);
+        // ルール
+        $rules = [];
+        $rules['title'] = "required";
+
+        // メッセージ
+        $messages = [];
+        $messages['title.required'] = "タイトルは必須です。";
+
+        // 入力チェック開始
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        // チェックエラーの場合
+        if ($validator->fails()) {
+            // リダイレクト(初期表示のページに戻す)
+            return redirect('/posts/create')->withErrors($validator->errors())->withInput();
+        }
         $post = new Post();
         $post->title = $request->input('title');
         $post->content = $request->input('content');
@@ -78,6 +99,11 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $request->validate([
+
+            'title' => 'required|max:255',
+            'content' => 'required',
+        ]);
         $post->title = $request->input('title');
         $post->content = $request->input('content');
         $post->save();
