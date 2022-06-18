@@ -8,7 +8,7 @@
         {{ session('message') }}
     @endif
 
-    <h1>Posts</h1>
+    <h1>conoha</h1>
 
     @foreach($posts as $post)
         <a href="/posts/{{ $post->id }}">{{ $post->title }}</a>
