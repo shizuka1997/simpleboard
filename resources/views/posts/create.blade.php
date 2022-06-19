@@ -1,33 +1,39 @@
 @extends('layouts.layouts')
 
-@section('title', 'Simple Board')
+@section('title', 'ライター新規登録')
 
 @section('content')
 
-<h1>New Post</h1>
+<h1>ライター新規登録</h1>
+
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+     <div class="alert alert-danger">
+         <ul>
+             @foreach ($errors->all() as $error)
+                 <li>{{ $error }}</li>
+             @endforeach
+         </ul>
+     </div>
 @endif
 
-<form method="POST" action="/posts">
+<form method="POST" action="/writer_insert">
     {{ csrf_field() }}
     <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" id="title" class="form-control" aria-describedby="emailHelp" name="title" value="{{old('title')}}">
+        <label for="w_1">ライター名</label>
+        <input type="text" class="form-control" name="w_n" value="{{old('w_name')}}">
     </div>
     <div class="form-group">
-        <label for="content">Content</label>
-        <textarea id="content" class="form-control" name="content">{{old('content')}}</textarea>
+        <label for="w_2">住所</label>
+        <input type="text" class="form-control" name="w_a" value="{{old('w_address')}}">
     </div>
-    <button type="submit" class="btn btn-outline-primary">Submit</button>
+    <div class="form-group">
+        <label for="w_3">電話番号</label>
+        <input type="text" class="form-control" name="w_t" value="{{old('w_tel')}}">
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">登録</button>
 </form>
 
-<a href="/posts">Back</a>
+<a href="/writer">戻る</a>
 
 @endsection
