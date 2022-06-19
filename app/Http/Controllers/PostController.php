@@ -2,135 +2,124 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
 use Illuminate\Http\Request;
-use Validator;
+use App\Writer;
 use DB;
-use Log;
 
-class PostController extends Controller
+class WriterController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * ＴＯＰページの表示
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $title = $request->input("title");
-        // $posts = Post::all();
-        $sql = "select * from posts "
-                ."where title='$title'"
-                ."order by title desc";
-        Log::debug($sql);
-        $posts = DB::select($sql);
-        // dd($posts);
-        Log::debug($posts);
+        $ws = Writer::all();
 
-        return view('posts.index', compact('posts'));
+        return view('writer.index', compact('ws'));
+
     }
 
     /**
-     * Show the form for creating a new resource.
+     * ライター新規登録の初期表示
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        return view('posts.create');
+        return view('writer.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * ライターの新規登録
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        // $request->validate([
-        //     'title' => 'required',
-        //     'content' => 'required',
-        // ]);
-        // ルール
-        $rules = [];
-        $rules['title'] = "required";
-
-        // メッセージ
-        $messages = [];
-        $messages['title.required'] = "タイトルは必須です。";
-
-        // 入力チェック開始
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        // チェックエラーの場合
-        if ($validator->fails()) {
-            // リダイレクト(初期表示のページに戻す)
-            return redirect('/posts/create')->withErrors($validator->errors())->withInput();
-        }
-        $post = new Post();
-        $post->title = $request->input('title');
-        $post->content = $request->input('content');
-        $post->save();
-
-        return redirect()->route('posts.show', ['id' => $post->id])->with('message', 'Post was successfully created.');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $post = Post::findOrFail($id);
-
-        return view('posts.show', compact('post'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        return view('posts.edit', compact('post'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
+    public function insert(Request $request)
     {
         $request->validate([
-
-            'title' => 'required|max:255',
-            'content' => 'required',
+            'w_n' => 'required',
+            'w_a' => 'required',
+            'w_t' => 'required',
         ]);
-        $post->title = $request->input('title');
-        $post->content = $request->input('content');
-        $post->save();
+       
+        $writer = new Writer();
+        $writer->w_name = $request->input('w_n');
+        $writer->w_address = $request->input('w_a');
+        $writer->w_tel = $request->input('w_t');
+        $writer->save();
 
-        return redirect()->route('posts.show', ['id' => $post->id])->with('message', 'Post was successfully updated.');
+        return redirect()->route('writer.index')->with('message', '登録しました。');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 個別の投稿ページの表示
      *
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function show(Writer $ws)
     {
-        $post->delete();
-
-        return redirect()->route('posts.index');
+        return view('writer.show', compact('writer'));
     }
+
+    /**
+     * 投稿編集 画面の表示
+     *
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Writer $writer)
+    {
+         return view('writer.edit', compact('writer'));
+    }
+
+    /**
+     * 投稿の更新を保存
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Writer $writer)
+    {
+        $request->validate([
+            'w_n' => 'required',
+            'w_a' => 'required',
+            'w_t' => 'required',
+        ]);
+        // dd($writer->id);
+        // $writer->w_name = $request->input('w_n');
+        // $writer->w_address = $request->input('w_a');
+        // $writer->w_tel = $request->input('w_t');
+        // $writer->save();
+        $id = $writer->id;
+        $w_name = $request->input('w_n');
+        $w_address = $request->input('w_a');
+        $w_tel = $request->input('w_t');
+        $sql = "update writers set w_name = '$w_name', w_address = '$w_address', w_tel = '$w_tel' "
+            ." where id = '$id' ";
+        DB::update($sql);
+
+        // return redirect()->route('writer.index', ['id' => $ws->id])->with('message', 'Writer was successfully updated.');
+        return redirect('writer')->with('message', '更新に成功しました。');
+    }
+
+        /**
+     * ライターの削除
+     *
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Writer $delete)
+    {
+        // dd($writer);
+        $delete->delete();
+        // return redirect()->route('writer.index');
+        return redirect('writer')->with('message', '削除に成功しました。');
+    }
+
 }
+
