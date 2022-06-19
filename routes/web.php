@@ -53,4 +53,6 @@ Route::post('writer_delete/{delete}', 'WriterController@delete');
 //    URL::forceScheme('https');
 // }
 
-
+if (env('APP_ENV') === 'local') {
+   URL::forceScheme('https');
+}
