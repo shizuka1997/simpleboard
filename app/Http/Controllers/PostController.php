@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Writer;
 use DB;
 
-class WriterController extends Controller
+class PostController extends Controller
 {
     /**
      * ＴＯＰページの表示
