@@ -52,3 +52,6 @@ Route::post('writer_delete/{delete}', 'WriterController@delete');
 // if (env('APP_ENV') === 'local') {
 //    URL::forceScheme('https');
 // }
+
+Route::get('ajax', 'AjaxValidationController@index');
+Route::post('validation_ajax', 'AjaxValidationController@entry');
