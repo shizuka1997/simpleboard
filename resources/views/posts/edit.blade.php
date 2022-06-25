@@ -1,10 +1,10 @@
 @extends('layouts.layouts')
 
-@section('title', 'ライター登録内容の編集')
+@section('title', 'Simple Board')
 
 @section('content')
 
-<h1>ライター登録内容の編集</h1>
+<h1>Editing Post</h1>
 
 @if ($errors->any())
      <div class="alert alert-danger">
@@ -16,28 +16,21 @@
      </div>
 @endif
 
-<form action="/writer_update/{{ $writer->id }}" method="POST" >
+<form method="POST" action="/posts/{{ $post->id }}">
     {{ csrf_field() }}
-
+    <input type="hidden" name="_method" value="PUT">
     <div class="form-group">
-        <label for="w_1">ライター名</label>
-        <textarea class="form-control" name="w_n">{{ old('w_n', $writer->w_name) }}</textarea>
+        <label for="exampleInputEmail1">Title</label>
+        <input type="text" class="form-control" aria-describedby="emailHelp" name="title" value="{{ old('title') == '' ? $post->title : old('title') }}">
     </div>
-
     <div class="form-group">
-        <label for="w_2">住所</label>
-        <textarea class="form-control" name="w_a">{{ old('w_a', $writer->w_address) }}</textarea>
+        <label for="exampleInputPassword1">Content</label>
+        <textarea class="form-control" name="content">{{ old('content') == '' ? $post->content : old('content') }}</textarea>
     </div>
-
-    <div class="form-group">
-        <label for="w_3">電話番号</label>
-        <textarea class="form-control" name="w_t">{{ old('w_t', $writer->w_tel) }}</textarea>
-    </div>
-
-    <button type="submit" class="btn btn-outline-primary">編集</button>
+    <button type="submit" class="btn btn-outline-primary">Submit</button>
 </form>
 
-<!-- <a href="/writer/{{ $writer->id }}">確認</a> |  -->
-<a href="/writer">戻る</a>
+<a href="/posts/{{ $post->id }}">Show</a> | 
+<a href="/posts">Back</a>
 
 @endsection

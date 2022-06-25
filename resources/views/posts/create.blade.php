@@ -1,10 +1,10 @@
 @extends('layouts.layouts')
 
-@section('title', 'ライター新規登録')
+@section('title', 'Simple Board')
 
 @section('content')
 
-<h1>ライター新規登録</h1>
+<h1>New Post</h1>
 
 @if ($errors->any())
      <div class="alert alert-danger">
@@ -16,24 +16,19 @@
      </div>
 @endif
 
-<form method="POST" action="/writer_insert">
+<form method="POST" action="/posts">
     {{ csrf_field() }}
     <div class="form-group">
-        <label for="w_1">ライター名</label>
-        <input type="text" class="form-control" name="w_n" value="{{old('w_name')}}">
+        <label for="exampleInputEmail1">Title</label>
+        <input type="text" class="form-control" aria-describedby="emailHelp" name="title" value="{{old('title')}}">
     </div>
     <div class="form-group">
-        <label for="w_2">住所</label>
-        <input type="text" class="form-control" name="w_a" value="{{old('w_address')}}">
+        <label for="exampleInputPassword1">Content</label>
+        <textarea class="form-control" name="content">{{old('content')}}</textarea>
     </div>
-    <div class="form-group">
-        <label for="w_3">電話番号</label>
-        <input type="text" class="form-control" name="w_t" value="{{old('w_tel')}}">
-    </div>
-
-    <button type="submit" class="btn btn-outline-primary">登録</button>
+    <button type="submit" class="btn btn-outline-primary">Submit</button>
 </form>
 
-<a href="/writer">戻る</a>
+<a href="/posts">Back</a>
 
 @endsection
