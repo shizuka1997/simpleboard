@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWritersTable extends Migration
+class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateWritersTable extends Migration
      */
     public function up()
     {
-        Schema::create('writers', function (Blueprint $table) {
-            // ライターＩＤ
+        Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            // ライターの名前
-            $table->string('w_name');
-            // ライターの住所
-            $table->string('w_address');
-            // ライターの電話番号
-            $table->string('w_tel');
+            $table->string('title');
+            $table->text('content');
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ class CreateWritersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('writers');
+        Schema::dropIfExists('posts');
     }
 }
