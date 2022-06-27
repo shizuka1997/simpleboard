@@ -36,6 +36,7 @@ Route::post('car_update/{car}', 'CarController@update');
 Route::post('car_delete/{car}', 'CarController@destroy');
 // 削除　Route::get('writer/{writer_no}', 'WriterController@show')->name('writer.show');
 
+Route::resource('writers', 'WriterController');
 // 初期表示
 Route::get('writer', 'WriterController@index')->name('writer.index');
 // ライターの新規登録の初期表示
